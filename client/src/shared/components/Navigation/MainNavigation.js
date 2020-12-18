@@ -20,10 +20,9 @@ const mainNav = props => {
     return(
             <React.Fragment>
                 { isDrawerOpen ? <BackDrop  clicked={closeSideDrawer}/> : null}
-                { isDrawerOpen ?
-                    <SideDrawer>
+                    <SideDrawer show={isDrawerOpen} clicked={closeSideDrawer}>
                         <NavLinks/>
-                    </SideDrawer> : null}
+                    </SideDrawer>
                 <MainHeader>
                     <button className="main-navigation__menu-btn" onClick={openSideDrawer}>
                         <span/>

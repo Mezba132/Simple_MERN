@@ -1,6 +1,7 @@
 import React from 'react';
 import './UserList.css'
 import UserItem from './UserItem';
+import Card from '../../shared/components/UIElement/Card';
 
 const UserList = (props) => {
 
@@ -8,7 +9,9 @@ const UserList = (props) => {
     {
     return (
         <div>
-            <h1 className="center"> Nothing Found </h1>
+            <Card>
+               <h1 className="center"> Nothing Found </h1>
+            </Card>
         </div>
           );
     }
@@ -17,13 +20,13 @@ const UserList = (props) => {
         <div>
             <ul className="users-list">
                 {props.items.map( user => (
-                <UserItem 
+                <UserItem
                     key={user.id}
                     id={user.id}
                     name={user.name}
                     image={user.image}
                     placeCount={user.placeCount}
-                />                 
+                />
                 ))}
             </ul>
         </div>
@@ -31,24 +34,3 @@ const UserList = (props) => {
 }
 
 export default UserList;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

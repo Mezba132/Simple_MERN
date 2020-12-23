@@ -1,5 +1,6 @@
 import React from 'react';
 import PlaceList from '../components/PlaceList';
+import { useParams } from 'react-router-dom';
 
 const placeList = [
     {
@@ -8,7 +9,7 @@ const placeList = [
         title : 'Burj Khalifa',
         description:'The tallest building in the world',
         address: '1 Sheikh Mohammed bin Rashid Blvd - Dubai - United Arab Emirates',
-        creator: 'leo',
+        creator: 'u1',
         location: {
             lat: 25.197197,
             lng: 55.2721877
@@ -28,8 +29,10 @@ const placeList = [
     }
 ]
 
-const userPlace = () => (
-    <PlaceList items={placeList} />
-)
+const userPlace = () => {
+    const uId = useParams().userId;
+    const loadPlace = placeList.filter(place => place.id === uId);
+    return <PlaceList items={loadPlace}/>
+}
 
 export default userPlace;

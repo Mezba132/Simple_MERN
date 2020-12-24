@@ -18,7 +18,7 @@
     border: 1px solid transparent;
     color: #292929;
     text-decoration: none;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
 }
 
 .nav-links a:hover,
@@ -34,7 +34,7 @@
     border: 1px solid #292929;
     color: #292929;
     background: transparent;
-    padding: 0.5rem;
+    padding: .5rem;
     font: inherit;
 }
 

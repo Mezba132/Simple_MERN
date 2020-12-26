@@ -2,27 +2,32 @@ import React, { useReducer, useEffect } from 'react';
 import './Input.css';
 import { validate } from "../util/validators";
 
-const inputReducer = (currentState, action) =>{
-     switch (action.type) {
-         case 'change' :
-             return {
-             ...currentState,
-             value : action.val,
-             isValid : validate(action.val, action.validators)
-             }
-         case 'touch' : {
-             return {
-                 ...currentState,
-                 isTouched : true
-             }
-         }
-         default :
-             return currentState;
-     }
- }
+const inputReducer = (currentState, action) => {
+    switch (action.type) {
+        case 'change' :
+            return {
+                ...currentState,
+                value: action.val,
+                isValid: validate(action.val, action.validators)
+            }
+        case 'touch' : {
+            return {
+                ...currentState,
+                isTouched: true
+            }
+        }
+        default :
+            return currentState;
+    }
+}
 
 const Input = (props) => {
-    const [inputState, dispatch] = useReducer(inputReducer, {value : '', isValid : false});
+    const [inputState, dispatch] = useReducer(inputReducer,
+        {
+            value : props.value || '',
+            isTouched : false,
+            isValid : props.valid || false
+        });
 
     const { id, onInput } = props;
     const { value, isValid } = inputState;
@@ -38,8 +43,6 @@ const Input = (props) => {
     const touchHandler = () => {
         dispatch( { type : 'touch' })
     }
-
-
 
     const element =
         props.element === 'input' ?

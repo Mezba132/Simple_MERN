@@ -1,64 +1,16 @@
-import React, {useReducer, useCallback} from 'react';
+import React from 'react';
 import Input from "../../shared/components/FormElements/Input";
-import './NewPlaces.css';
+import './PlaceForm.css';
 import { VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from '../../shared/components/util/validators';
 import Button from "../../shared/components/FormElements/Button";
-
-const formReducer = (currentState, action) => {
-    switch (action.type) {
-        case 'input_change' :
-            let formIsValid  = true;
-            for( const inputId in currentState.inputs )
-            {
-                if(inputId === action.inputId)
-                {
-                    formIsValid = formIsValid && action.isValid;
-                }
-                else
-                {
-                    formIsValid = formIsValid && currentState.inputs[inputId].isValid;
-                }
-            }
-            return {
-                ...currentState,
-                inputs : {
-                    ...currentState.inputs,
-                    [action.inputId] : { value : action.value, isValid : action.isValid}
-                },
-                isValid : formIsValid
-            }
-        default :
-            return currentState;
-    }
-}
+import  useForm  from '../../shared/components/CustomHooks/FormHooks';
 
 const NewPlace = () => {
 
-      const [formState, dispatch] = useReducer(formReducer, {
-        inputs : {
-            title : {
-                value : '',
-                isValid : false
-            },
-            description : {
-                value : '',
-                isValid : false
-            }
-        },
-          isValid : false
-    })
-
-    const inputHandler = useCallback((id, value, isValid) => {
-        dispatch({
-            type : 'input_change',
-            value: value,
-            isValid: isValid,
-            inputId : id
-        })
-    }, []);
+    const [formState, inputHandler] = useForm();
 
     const placeSubmitHandler = event => {
-        event.preventDefault();
+            event.preventDefault();
         console.log(formState.inputs);
     }
 
@@ -79,7 +31,7 @@ const NewPlace = () => {
             element="textarea"
             label="Description"
             placeholder="Place Information"
-            validators={[VALIDATOR_MINLENGTH(10)]}
+            validators={[VALIDATOR_MINLENGTH(3)]}
             onInput={inputHandler}
             errorText="Please Enter the place Information"
         />

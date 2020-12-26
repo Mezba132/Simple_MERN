@@ -1,23 +1,5 @@
 import React, {useReducer, useCallback} from 'react';
 
-const initialState = {
-    inputs : {
-        title : {
-            value : '',
-                isValid : false
-        },
-        description : {
-            value : '',
-                isValid : false
-        },
-        address : {
-            value : '',
-                isValid : false
-        }
-    },
-    isValid : false
-}
-
 const formReducer = (currentState, action) => {
     switch (action.type) {
         case 'input_change' :
@@ -46,8 +28,8 @@ const formReducer = (currentState, action) => {
     }
 }
 
-const useForm = () => {
-    const [formState, dispatch] = useReducer(formReducer, initialState);
+const useForm = (initInput, initValid) => {
+    const [formState, dispatch] = useReducer(formReducer, {inputs : initInput, isValid : initValid});
 
     const inputHandler = useCallback((id, value, isValid) => {
         dispatch({

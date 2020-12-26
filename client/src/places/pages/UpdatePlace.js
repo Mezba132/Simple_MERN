@@ -4,6 +4,7 @@ import Input from "../../shared/components/FormElements/Input";
 import {VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE} from "../../shared/components/util/validators";
 import Button from "../../shared/components/FormElements/Button";
 import './PlaceForm.css';
+import useForm from "../../shared/components/CustomHooks/FormHooks";
 
 const placeList = [
     {
@@ -36,17 +37,37 @@ const UpdatePlace = () => {
     const pId = useParams().placeId;
     const _place = placeList.find(place => place.id === pId);
 
+    const [formState, inputHandler] = useForm({
+        title: {
+            value: _place.title,
+            isValid: true
+        },
+        description: {
+            value: _place.description,
+            isValid: true
+        },
+        address: {
+            value: _place.address,
+            isValid: true
+        }
+    }, true);
+
+    const placeSubmitHandler = event => {
+        event.preventDefault();
+        console.log(formState.inputs);
+    }
+
     return (
-        <form className="place-form" >
+        <form className="place-form" onSubmit={placeSubmitHandler}>
             <Input
                 id="title"
                 element="input"
                 type="text"
                 label="Title"
                 validators={[VALIDATOR_REQUIRE()]}
-                value={_place.title}
-                valid={true}
-                onInput={ () => {}}
+                initValue={formState.inputs.title.value}
+                initValid={formState.inputs.title.isValid}
+                onInput={inputHandler}
                 errorText="Please Enter the place Name"
             />
 
@@ -55,10 +76,21 @@ const UpdatePlace = () => {
                 element="textarea"
                 label="Description"
                 validators={[VALIDATOR_MINLENGTH(5)]}
-                value={_place.description}
-                valid={true}
-                onInput={ () => {}}
+                initValue={formState.inputs.description.value}
+                initValid={formState.inputs.description.isValid}
+                onInput={inputHandler}
                 errorText="Please Enter the place Name"
+            />
+
+            <Input
+                id="address"
+                element="input"
+                label="address"
+                validators={[VALIDATOR_REQUIRE()]}
+                initValue={formState.inputs.address.value}
+                initValid={formState.inputs.address.isValid}
+                onInput={inputHandler}
+                errorText="Please Enter the place Address"
             />
 
             <Button type="submit" > Update Place </Button>

@@ -6,10 +6,10 @@ const placeSchema = new mongoose.Schema({
     image : { type : String, required : true},
     address : { type : String, required : true},
     location : {
-        lan : { type : String, required : true},
+        lng : { type : String, required : true},
         lat : { type : String, required : true}
     },
-    creator : { type : mongoose.types.ObjectID, required : true, ref : 'User'}
+    creator : { type : mongoose.Types.ObjectId, required : true, ref : 'User'}
 })
 
 module.exports = mongoose.model('Place', placeSchema);

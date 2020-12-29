@@ -9,6 +9,8 @@ import './Auth.css';
 import Button from "../../shared/components/FormElements/Button";
 import Card from "../../shared/components/UIElement/Card";
 import {AuthContext} from "../../shared/components/Context/Auth-Contex";
+import LoadingSpinner from "../../shared/components/UIElement/LoadingSpinner";
+import ErrorModal from "../../shared/components/UIElement/ErrorModal";
 
 const Auth = () => {
 
@@ -16,6 +18,9 @@ const Auth = () => {
 
     const [isLoginMode, setIsLoginMode] = useState(true);
 
+    const [isLoading,setLoading] = useState(false);
+
+    const [error, setError] = useState();
 
     const [formState, inputHandler, setFormData] = useForm({
             email: {
@@ -63,6 +68,7 @@ const Auth = () => {
         else
             {
             try {
+                setLoading(true);
                  const response = await fetch('http://localhost:5000/api/users/signup', {
                     method : 'post',
                     headers : {
@@ -75,19 +81,30 @@ const Auth = () => {
                     })
                 });
                  const responseData = await response.json();
+                if(!response.ok) {
+                    throw new error(responseData.message);
+                }
                  console.log(responseData);
                  setLoading(false);
                  auth.login();
             }
             catch (err) {
                 console.log(err);
+                setLoading(false);
                 setError( err.message || "something went wrong, try again");
             }
         }
     }
 
+    const errorHandler = () => {
+        setError(null);
+    }
+
     return(
-        <Card className="authentication">
+        <React.Fragment>
+            <ErrorModal error={error} onClear={errorHandler} />
+            <Card className="authentication">
+            {isLoading && <LoadingSpinner asOverlay />}
             <h2>LogIn Required</h2>
             <hr />
             <form className="place-form" onSubmit={authSubmitHandler}>
@@ -130,6 +147,7 @@ const Auth = () => {
                 SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
             </Button>
         </Card>
+        </React.Fragment>
     )
 }
 

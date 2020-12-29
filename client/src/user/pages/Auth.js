@@ -18,7 +18,7 @@ const Auth = () => {
 
     const [isLoginMode, setIsLoginMode] = useState(true);
 
-    const [isLoading,setLoading] = useState(false);
+    const [isLoading,setIsLoading] = useState(false);
 
     const [error, setError] = useState();
 
@@ -61,14 +61,37 @@ const Auth = () => {
 
     const authSubmitHandler = async (event) => {
         event.preventDefault();
+        setIsLoading(true);
+
         if(isLoginMode)
         {
+            try {
+                const response = await fetch('http://localhost:5000/api/users/login', {
+                    method : 'post',
+                    headers : {
+                        'Content-Type' : 'application/json'
+                    },
+                    body : JSON.stringify({
+                        email :  formState.inputs.email.value,
+                        password :  formState.inputs.password.value,
+                    })
+                });
 
+                const responseData = await response.json();
+                if(!response.ok) {
+                    throw new error(responseData.message);
+                }
+                setIsLoading(false);
+                auth.login();
+            }
+            catch (err) {
+                setIsLoading(false);
+                setError( err.message || "something went wrong, try again");
+            }
         }
         else
             {
-            try {
-                setLoading(true);
+                try {
                  const response = await fetch('http://localhost:5000/api/users/signup', {
                     method : 'post',
                     headers : {
@@ -84,13 +107,11 @@ const Auth = () => {
                 if(!response.ok) {
                     throw new error(responseData.message);
                 }
-                 console.log(responseData);
-                 setLoading(false);
+                 setIsLoading(false);
                  auth.login();
             }
             catch (err) {
-                console.log(err);
-                setLoading(false);
+                setIsLoading(false);
                 setError( err.message || "something went wrong, try again");
             }
         }

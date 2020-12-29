@@ -44,7 +44,7 @@ const signup = async (req, res, next) => {
     name,
     email,
     password,
-    image,
+    image:'https://pbs.twimg.com/profile_images/1322781586513895425/G_stL2vh_400x400.jpg',
     places : []
   });
 

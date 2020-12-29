@@ -16,8 +16,9 @@ const Auth = () => {
 
     const [isLoginMode, setIsLoginMode] = useState(true);
 
+
     const [formState, inputHandler, setFormData] = useForm({
-        username: {
+            email: {
             value: '',
             isValid: false
         },
@@ -36,7 +37,7 @@ const Auth = () => {
                     ...formState.inputs,
                     name: undefined
                 },
-                 formState.inputs.username.isValid && formState.inputs.password.isValid
+                 formState.inputs.email.isValid && formState.inputs.password.isValid
             );
         } else {
             setFormData(
@@ -53,10 +54,36 @@ const Auth = () => {
         setIsLoginMode(prevMode => !prevMode);
     };
 
-    const authSubmitHandler = event => {
+    const authSubmitHandler = async (event) => {
         event.preventDefault();
-        console.log(formState.inputs);
-        auth.login();
+        if(isLoginMode)
+        {
+
+        }
+        else
+            {
+            try {
+                 const response = await fetch('http://localhost:5000/api/users/signup', {
+                    method : 'post',
+                    headers : {
+                        'Content-Type' : 'application/json'
+                    },
+                    body : JSON.stringify({
+                      name : formState.inputs.name.value,
+                      email :  formState.inputs.email.value,
+                      password :  formState.inputs.password.value,
+                    })
+                });
+                 const responseData = await response.json();
+                 console.log(responseData);
+                 setLoading(false);
+                 auth.login();
+            }
+            catch (err) {
+                console.log(err);
+                setError( err.message || "something went wrong, try again");
+            }
+        }
     }
 
     return(
@@ -76,7 +103,7 @@ const Auth = () => {
                     />
                 )}
                 <Input
-                    id="username"
+                    id="email"
                     element="input"
                     type="email"
                     label="User Name"

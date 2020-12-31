@@ -14,7 +14,7 @@ const getUsers = async (req, res, next) => {
   }
 
   res.json({
-    users: users.map( user => user.toObject({getters : true }) )
+    users: users.map( user => user.toObject({ getters : true }) )
   });
 };
 
@@ -23,7 +23,7 @@ const signup = async (req, res, next) => {
   if (!errors.isEmpty()) {
     return next ( new HttpError('Invalid inputs passed, please check your data.', 422) );
   }
-  const { name, email, password, image } = req.body;
+  const { name, email, password } = req.body;
 
   let existingEmail;
   try {

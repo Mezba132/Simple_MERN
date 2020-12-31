@@ -1,27 +1,48 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import UserList from '../components/UserList';
+import ErrorModal from "../../shared/components/UIElement/ErrorModal";
+import LoadingSpinner from "../../shared/components/UIElement/LoadingSpinner";
 
 const User = () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState();
+    const [loadUsers, setLoadUsers] = useState();
 
-    const User = [
-        {
-        id : "u1",
-        name : "Leo Messi",
-        image : "https://english.cdn.zeenews.com/sites/default/files/2015/06/05/365209-lionel-messi-young.jpg",
-        placeCount : 5
-        },
-        {
-            id : "u2",
-            name : "Khabib - Eagle",
-            image : "https://pngimg.com/uploads/khabib/khabib_PNG2.png",
-            placeCount : 2
-        }
-    ];
+    useEffect( () => {
+        const sendRequest = async () => {
+            setIsLoading(true);
+            try {
+                const response = await fetch('http://localhost:5000/api/users' );
+                const responseData = await response.json();
+                if(!response.ok)
+                {
+                    throw new Error(responseData.message);
+                }
+                setLoadUsers(responseData.users);
+            }
+            catch (err) {
+                setError(  "something went wrong, try again");
+            }
+            setIsLoading(false);
+        };
+        sendRequest();
+    }, []);
+
+    const errorHandler = () => {
+        setError(null);
+    }
 
    return  (
-       <div>
-            <UserList items={User}/>
-       </div>
+       <React.Fragment>
+           <ErrorModal error={error} onClear={errorHandler} />
+               { isLoading && (
+                   <div className="center">
+                       <LoadingSpinner />
+                   </div>
+               )}
+           {/*{console.log(loadUsers)}*/}
+           { !isLoading && loadUsers && <UserList items={loadUsers}/>}
+       </React.Fragment>
    )  
 }
 

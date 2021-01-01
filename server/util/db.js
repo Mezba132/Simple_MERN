@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://admin-mezba:mezba017529@cluster0.y37cv.mongodb.net/mernDB', {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
+mongoose.connect(process.env.MONGODB_URI ||'mongodb+srv://admin-mezba:mezba017529@cluster0.y37cv.mongodb.net/mernDB', {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
     if(!err) {
         console.log('MongooDB connection successfull');
     }

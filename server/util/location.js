@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const HttpError = require('../models/http-error');
 
-const API_KEY = 'AIzaSyDgLmMpKCzveJf1_yuA0fUzzhy0WRChvZA';
+const API_KEY = 'pk.eyJ1IjoibWV6YmExMzIiLCJhIjoiY2tqMWVydXA3MDU5aTJ5cGtwZGc2b2FkNyJ9.eZmP-febgi_9LvYVVsTtWg';
 
 async function getCoordsForAddress(address) {
   // return {
@@ -10,12 +10,11 @@ async function getCoordsForAddress(address) {
   //   lng: -73.9871516
   // };
   const response = await axios.get(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-      address
-    )}&key=${API_KEY}`
+      `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?types=address&access_token=${API_KEY}`
   );
 
   const data = response.data;
+  console.log(data);
 
   if (!data || data.status === 'ZERO_RESULTS') {
     const error = new HttpError(
@@ -25,8 +24,11 @@ async function getCoordsForAddress(address) {
     throw error;
   }
 
-  const coordinates = data.results[0].geometry.location;
-
+  const coordinates = {
+    lng : data.features[0].center[0],
+    lat : data.features[0].center[1]
+  }
+  console.log(coordinates)
   return coordinates;
 }
 

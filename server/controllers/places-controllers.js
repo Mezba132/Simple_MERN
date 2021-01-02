@@ -61,14 +61,14 @@ const createPlace = async (req, res, next) => {
     );
   }
 
-  const { title, description, image, address, coordinates, creator } = req.body;
+  const { title, description, image, address, creator } = req.body;
 
-  // let coordinates;
-  // try {
-  //   coordinates = await getCoordsForAddress(address);
-  // } catch (error) {
-  //   return next(error);
-  // }
+  let coordinates;
+  try {
+    coordinates = await getCoordsForAddress(address);
+  } catch (error) {
+    return next(error);
+  }
 
   // const title = req.body.title;
   const createdPlace =  new Place ({

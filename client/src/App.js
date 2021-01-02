@@ -2,7 +2,7 @@ import './App.css';
 import React, {useState, useCallback} from 'react';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import User from './user/pages/User';
-import Places from './places/pages/NewPlaces';
+import AddPlace from './places/pages/AddNewPlace';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 import UserPlaces from './places/pages/UserPlaces';
 import UpdatePlace from "./places/pages/UpdatePlace";
@@ -33,7 +33,7 @@ const App = () => {
             <UserPlaces />
           </Route>
           <Route path="/places/new" exact>
-            <Places />
+            <AddPlace />
           </Route>
           <Route path="/places/:placeId">
             <UpdatePlace />

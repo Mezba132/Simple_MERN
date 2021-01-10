@@ -5,8 +5,8 @@ Simple web app developed by Node.js and React.js
 # Back-End
 Node.js (Esxpress.js, Rest API)
 
-#Front-End
+# Front-End
 React.js (Readux, Hooks)
 
-#Database
+# Database
 MongoDB
